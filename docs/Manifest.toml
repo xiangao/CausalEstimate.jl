@@ -242,7 +242,9 @@ weakdeps = ["CausalGraphs"]
 
 [[deps.CausalGraphs]]
 deps = ["DataFrames", "DecisionTree", "EvoTrees", "GLM", "LinearAlgebra", "MLJ", "MLJDecisionTreeInterface", "MLJLinearModels", "Random", "Statistics", "StatsModels"]
-path = "/home/xao/projects/software/CausalGraphs.jl"
+git-tree-sha1 = "99ba48f976bf642efe8ecd15af232f19fa224f57"
+repo-name = "CausalGraphs.jl"
+repo-url = "https://github.com/xiangao/CausalGraphs.jl.git"
 uuid = "c9f3a1b2-7e4d-5f8a-b0c1-2d3e4f5a6b7c"
 version = "0.1.0"
 
