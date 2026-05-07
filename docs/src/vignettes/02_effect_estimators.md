@@ -32,6 +32,8 @@ df_att = DataFrame(Y = Y_att, A = A, w1 = Float64.(w1), w2 = w2)
 
 psi_ate = ATE(outcome = :Y, treatment = :A, confounders = [:w1, :w2])
 psi_att = ATT(outcome = :Y, treatment = :A, confounders = [:w1, :w2])
+
+r(x) = round(x, sigdigits = 4)
 ```
 
 We work with a two-confounder data-generating process. The true ATE is **2.0**
@@ -51,6 +53,10 @@ Y_cont = 2.0 .* A .+ 0.5 .* Float64.(w1) .+ w2 .+ randn(n)
 df_cont = DataFrame(Y = Y_cont, A = A, w1 = Float64.(w1), w2 = w2)
 
 psi_ate = ATE(outcome = :Y, treatment = :A, confounders = [:w1, :w2])
+
+r(x) = round(x, sigdigits = 4)
+
+first(df_cont, 5)
 ```
 
 ## TMLE for ATE
@@ -64,9 +70,9 @@ finite-sample behavior relative to a naive plug-in estimator.
 tmle_result = estimate(psi_ate, TMLE(crossfit = 2), df_cont)
 
 (
-    estimate  = estimate(tmle_result),
-    ci        = confint(tmle_result),
-    one_step  = estimate(tmle_result.components[:onestep]),
+    estimate  = r(estimate(tmle_result)),
+    ci        = r.(confint(tmle_result)),
+    one_step  = r(estimate(tmle_result.components[:onestep])),
 )
 ```
 
@@ -84,10 +90,10 @@ correctly specified.
 aipw_result = estimate(psi_ate, AIPW(crossfit = 2), df_cont)
 
 (
-    estimate      = estimate(aipw_result),
-    ci            = confint(aipw_result),
-    treated_mean  = estimate(aipw_result.components[:treated]),
-    control_mean  = estimate(aipw_result.components[:control]),
+    estimate      = r(estimate(aipw_result)),
+    ci            = r.(confint(aipw_result)),
+    treated_mean  = r(estimate(aipw_result.components[:treated])),
+    control_mean  = r(estimate(aipw_result.components[:control])),
 )
 ```
 
@@ -109,10 +115,10 @@ psi_att = ATT(outcome = :Y, treatment = :A, confounders = [:w1, :w2])
 att_result = estimate(psi_att, AIPW(crossfit = 2), df_att)
 
 (
-    estimate              = estimate(att_result),
-    ci                    = confint(att_result),
-    treated_mean          = estimate(att_result.components[:treated_mean]),
-    counterfactual_ctrl   = estimate(att_result.components[:counterfactual_control_mean]),
+    estimate            = r(estimate(att_result)),
+    ci                  = r.(confint(att_result)),
+    treated_mean        = r(estimate(att_result.components[:treated_mean])),
+    counterfactual_ctrl = r(estimate(att_result.components[:counterfactual_control_mean])),
 )
 ```
 

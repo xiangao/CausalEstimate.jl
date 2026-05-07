@@ -41,6 +41,8 @@ Y = 1.5 .* A .+ 0.8 .* X .+ randn(n)             # true ATE = 1.5
 
 df = DataFrame(Y = Y, A = A, X = X)
 
+r(x) = round(x, sigdigits = 4)
+
 g = make_graph(
     vertices = [:A, :Y, :X],
     di_edges = [(:X, :A), (:X, :Y), (:A, :Y)],
@@ -54,11 +56,11 @@ the estimator:
 psi = ATE(outcome = :Y, treatment = :A)
 result = estimate(psi, GraphID(graph = g), AIPW(crossfit = 2), df)
 
-estimate(result)
+r(estimate(result))
 ```
 
 ```@example ce_graph
-confint(result)
+r.(confint(result))
 ```
 
 The adjustment set that `GraphID` discovered:
@@ -93,8 +95,8 @@ You can use `TMLE` instead of `AIPW` without changing anything else:
 result_tmle = estimate(psi, GraphID(graph = g), TMLE(crossfit = 2), df)
 
 (
-    estimate = estimate(result_tmle),
-    ci       = confint(result_tmle),
+    estimate = r(estimate(result_tmle)),
+    ci       = r.(confint(result_tmle)),
 )
 ```
 
@@ -103,13 +105,12 @@ result_tmle = estimate(psi, GraphID(graph = g), TMLE(crossfit = 2), df)
 When confounders are known, both approaches should agree:
 
 ```@example ce_graph
-# manual specification
 psi_manual = ATE(outcome = :Y, treatment = :A, confounders = [:X])
 result_manual = estimate(psi_manual, AIPW(crossfit = 2), df)
 
 (
-    graph_identified = estimate(result),
-    manual           = estimate(result_manual),
+    graph_identified = r(estimate(result)),
+    manual           = r(estimate(result_manual)),
 )
 ```
 
@@ -121,7 +122,7 @@ The same graph-based identification works for ATT:
 psi_att = ATT(outcome = :Y, treatment = :A)
 result_att = estimate(psi_att, GraphID(graph = g), AIPW(crossfit = 2), df)
 
-estimate(result_att)
+r(estimate(result_att))
 ```
 
 ## Scope

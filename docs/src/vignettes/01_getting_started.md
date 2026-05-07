@@ -37,25 +37,28 @@ A = Int.(rand(n) .< 1.0 ./ (1.0 .+ exp.(-W)))  # P(A=1|W) = expit(W)
 Y = 2.0 .* A .+ W .+ randn(n)                   # true ATE = 2
 
 df = DataFrame(Y = Y, A = A, W = W)
+first(df, 5)
 ```
 
 Define the estimand and estimate with TMLE using 2-fold cross-fitting:
 
 ```@example ce_getting_started
+r(x) = round(x, sigdigits = 4)
+
 psi = ATE(outcome = :Y, treatment = :A, confounders = [:W])
 result = estimate(psi, TMLE(crossfit = 2), df)
 
-estimate(result)
+r(estimate(result))
 ```
 
 Extract inferential summaries:
 
 ```@example ce_getting_started
-confint(result)
+r.(confint(result))
 ```
 
 ```@example ce_getting_started
-pvalue(result)
+r(pvalue(result))
 ```
 
 Both TMLE and AIPW are **doubly robust**: they remain consistent if either the
@@ -69,7 +72,7 @@ The `estimate` dispatch is the same regardless of which estimator you choose:
 
 ```@example ce_getting_started
 result_aipw = estimate(psi, AIPW(crossfit = 2), df)
-estimate(result_aipw)
+r(estimate(result_aipw))
 ```
 
 Both should be close to the true ATE of 2. The estimand object `psi` never
@@ -90,7 +93,7 @@ df_att = DataFrame(Y = Y_att, A = A, W = W)
 psi_att = ATT(outcome = :Y, treatment = :A, confounders = [:W])
 result_att = estimate(psi_att, AIPW(crossfit = 2), df_att)
 
-estimate(result_att)
+r(estimate(result_att))
 ```
 
 ## Result Components
@@ -99,17 +102,16 @@ Every `CausalEstimateResult` carries a `components` dictionary with
 intermediate estimates. For TMLE you can compare the one-step correction:
 
 ```@example ce_getting_started
-result.components[:onestep]
+r(estimate(result.components[:onestep]))
 ```
 
 For AIPW you can inspect the treated and control potential outcome means:
 
 ```@example ce_getting_started
-result_aipw.components[:treated]
-```
-
-```@example ce_getting_started
-result_aipw.components[:control]
+(
+    treated = r(estimate(result_aipw.components[:treated])),
+    control = r(estimate(result_aipw.components[:control])),
+)
 ```
 
 ## What Is Implemented
