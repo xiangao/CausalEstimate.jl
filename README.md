@@ -22,11 +22,13 @@ Pkg.add(url="https://github.com/xiangao/CausalGraphs.jl")
 
 ## Tutorials
 
+Full documentation: **https://xiangao.github.io/CausalEstimate.jl/**
+
 | Vignette | Description |
 |----------|-------------|
-| [Getting Started](docs/src/vignettes/01_getting_started.md) | ATE and ATT estimation with TMLE and AIPW |
-| [Effect Estimators](docs/src/vignettes/02_effect_estimators.md) | Comparing TMLE and AIPW, doubly robust inference, and result components |
-| [Graph-Based Estimation](docs/src/vignettes/03_graph_based_estimation.md) | Graph-implied identification with `CausalGraphs.jl` and `GraphID` |
+| [Getting Started](https://xiangao.github.io/CausalEstimate.jl/vignettes/01_getting_started/) | ATE and ATT estimation with TMLE and AIPW |
+| [Effect Estimators](https://xiangao.github.io/CausalEstimate.jl/vignettes/02_effect_estimators/) | Comparing TMLE and AIPW, doubly robust inference, and result components |
+| [Graph-Based Estimation](https://xiangao.github.io/CausalEstimate.jl/vignettes/03_graph_based_estimation/) | Graph-implied identification with `CausalGraphs.jl` and `GraphID` |
 
 ## Quick Start
 
