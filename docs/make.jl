@@ -4,7 +4,7 @@ using CausalEstimate
 makedocs(
     sitename = "CausalEstimate.jl",
     modules = [CausalEstimate],
-    format = Documenter.HTML(),
+    format = Documenter.HTML(size_threshold = nothing),
     pages = [
         "Home" => "index.md",
         "API" => "api.md",
