@@ -22,8 +22,6 @@ Pkg.add(url="https://github.com/xiangao/CausalGraphs.jl")
 
 ## Tutorials
 
-Full documentation: **https://xiangao.github.io/CausalEstimate.jl/**
-
 | Vignette | Description |
 |----------|-------------|
 | [Getting Started](docs/src/vignettes/01_getting_started.md) | ATE and ATT estimation with TMLE and AIPW |
