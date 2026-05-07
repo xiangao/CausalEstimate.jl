@@ -1,0 +1,38 @@
+name = "CausalEstimate"
+uuid = "a2a36b22-1ff4-42e2-82bf-31b7d21f152e"
+version = "0.1.0"
+authors = ["Xiang Ao <xiangao@gmail.com>"]
+description = "Unified causal effect estimation API for treatment effects and graph-identified causal estimands"
+
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+EvoTrees = "f6006082-12f8-11e9-0c9c-0d5d367ab1e5"
+GLM = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
+MLJ = "add582a8-e3ab-11e8-2d5e-e98b27df1bc7"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+StatsModels = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
+
+[weakdeps]
+CausalGraphs = "c9f3a1b2-7e4d-5f8a-b0c1-2d3e4f5a6b7c"
+
+[extensions]
+CausalEstimateCausalGraphsExt = "CausalGraphs"
+
+[compat]
+CausalGraphs = "0.1"
+DataFrames = "1"
+Distributions = "0.25"
+EvoTrees = "0.18"
+GLM = "1"
+MLJ = "0.23"
+StatsModels = "0.7"
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
