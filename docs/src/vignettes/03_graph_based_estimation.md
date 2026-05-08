@@ -46,9 +46,7 @@ r(x) = round(x, sigdigits = 4)
 g = make_graph(
     vertices = [:A, :Y, :X],
     di_edges = [(:X, :A), (:X, :Y), (:A, :Y)],
-)
-
-nothing
+);
 ```
 
 Pass the graph as a `GraphID` identification layer between the estimand and
