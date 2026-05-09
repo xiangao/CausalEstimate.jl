@@ -16,7 +16,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 StatsModels = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
 
 [weakdeps]
-CausalGraphs = "c9f3a1b2-7e4d-5f8a-b0c1-2d3e4f5a6b7c"
+CausalGraphs = "68db26a2-7c2b-457b-8f5d-f446513faf50"
 
 [extensions]
 CausalEstimateCausalGraphsExt = "CausalGraphs"
