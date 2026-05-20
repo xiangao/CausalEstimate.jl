@@ -1,12 +1,11 @@
 # CausalEstimate.jl
 
-`CausalEstimate.jl` is a unified API for causal effect estimation in Julia,
-combining the nonparametric estimation methods of `NPCausal.jl` with the
-targeted learning machinery of `TMLE.jl` under one consistent interface.
+`CausalEstimate.jl` separates the causal question from the estimator. I use it
+when I want to define an estimand once and then try TMLE, AIPW, or a graph-based
+adjustment route without rewriting the setup.
 
-The package implements doubly robust semiparametric estimators — TMLE and
-AIPW — with cross-fitting, and an optional graph-based identification layer
-via `CausalGraphs.jl`.
+The current implementation covers TMLE and AIPW with cross-fitting. It also has
+a `GraphID` layer for backdoor adjustment sets supplied by `CausalGraphs.jl`.
 
 ## Implemented Routes
 

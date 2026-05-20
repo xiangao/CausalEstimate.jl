@@ -142,4 +142,4 @@ Planned next:
 
 For full ADMG estimation (p-fixable, nested-fixable, ID-algorithm effects), see
 [`CausalGraphs.jl`](https://xiangao.github.io/CausalGraphs.jl/dev/), which
-provides the complete estimation pipeline directly.
+has the direct estimators.

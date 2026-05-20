@@ -4,13 +4,13 @@
 CurrentModule = CausalEstimate
 ```
 
-`CausalEstimate.jl` provides a unified interface for estimating causal effects.
+`CausalEstimate.jl` keeps the estimand and the estimator as separate objects.
 The workflow has three steps:
 
 1. **Define an estimand** — what causal quantity do you want? (`ATE`, `ATT`, …)
 2. **Choose an estimator** — how should it be estimated? (`TMLE`, `AIPW`, …)
-3. **Call `estimate`** — the package handles nuisance fitting, cross-fitting,
-   and inference.
+3. **Call `estimate`** — fit the nuisance functions, cross-fit, and compute
+   inference.
 
 ## Installation
 
@@ -61,10 +61,9 @@ r.(confint(result))
 r(pvalue(result))
 ```
 
-Both TMLE and AIPW are **doubly robust**: they remain consistent if either the
-outcome model or the propensity score model is correctly specified (but not
-necessarily both). TMLE additionally applies a targeting step that makes the
-bias-variance tradeoff more favorable in finite samples.
+Both TMLE and AIPW use the same two nuisance functions: an outcome regression
+and a propensity score. The usual double-robust statement is that one of these
+can be wrong if the other is right. TMLE then adds a targeting step.
 
 ## Switching Estimators
 
