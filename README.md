@@ -1,11 +1,14 @@
 # CausalEstimate.jl
 
-`CausalEstimate.jl` is a unified front-end for causal effect estimation in
-Julia, combining the nonparametric estimation methods of `NPCausal.jl` with
-the targeted learning machinery of `TMLE.jl` under one consistent API.
+`CausalEstimate.jl` is the wrapper I use when I want the estimand to be
+separate from the estimator. The package currently connects the
+nonparametric estimators in `NPCausal.jl` with targeted-learning estimators
+from `TMLE.jl`.
 
-Define an estimand, choose an estimator, and call `estimate`. The package
-handles nuisance fitting, cross-fitting, and inference automatically.
+The workflow is deliberately plain: define the causal question, choose TMLE or
+AIPW, and call `estimate`. Cross-fitting and the standard-error calculation
+are handled inside the estimator, but the object returned by the call still
+keeps the pieces visible.
 
 ## Install
 
@@ -27,7 +30,7 @@ Full documentation: **https://xiangao.github.io/CausalEstimate.jl/**
 | Vignette | Description |
 |----------|-------------|
 | [Getting Started](https://xiangao.github.io/CausalEstimate.jl/vignettes/01_getting_started/) | ATE and ATT estimation with TMLE and AIPW |
-| [Effect Estimators](https://xiangao.github.io/CausalEstimate.jl/vignettes/02_effect_estimators/) | Comparing TMLE and AIPW, doubly robust inference, and result components |
+| [Effect Estimators](https://xiangao.github.io/CausalEstimate.jl/vignettes/02_effect_estimators/) | Comparing TMLE and AIPW and looking at the pieces of the result |
 | [Graph-Based Estimation](https://xiangao.github.io/CausalEstimate.jl/vignettes/03_graph_based_estimation/) | Graph-implied identification with `CausalGraphs.jl` and `GraphID` |
 
 ## Quick Start
@@ -62,8 +65,8 @@ estimate(result_aipw)
 
 ## Graph-Based Estimation
 
-Load `CausalGraphs.jl` and pass a `GraphID` layer to discover the adjustment
-set automatically from the graph structure:
+When the adjustment set comes from a graph, load `CausalGraphs.jl` and pass a
+`GraphID` layer:
 
 ```julia
 using CausalEstimate, CausalGraphs, DataFrames, Random
