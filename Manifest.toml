@@ -179,7 +179,7 @@ version = "0.1.0"
     CausalEstimateCausalGraphsExt = "CausalGraphs"
 
     [deps.CausalEstimate.weakdeps]
-    CausalGraphs = "c9f3a1b2-7e4d-5f8a-b0c1-2d3e4f5a6b7c"
+    CausalGraphs = "68db26a2-7c2b-457b-8f5d-f446513faf50"
 
 [[deps.ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra"]
