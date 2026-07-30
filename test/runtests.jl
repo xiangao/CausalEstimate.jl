@@ -94,6 +94,29 @@ using Statistics
         @test abs(estimate(result) - 1.5) < 0.35
         @test haskey(result.components, :treated_mean)
         @test haskey(result.components, :counterfactual_control_mean)
+
+        # The ATT standard error must match a hand-rolled efficient influence
+        # curve. This guards a bug the point-estimate test above cannot see:
+        # normalising the augmentation term by P(A=0) instead of P(A=1) barely
+        # moves the estimate (the term has mean zero under a consistent mu0hat)
+        # but scales the SE by P(A=1)/P(A=0).
+        nu = result.components[:nuisance]
+        p_treat = mean(nu.A)
+        aug_ref = (1 .- nu.A) .* (nu.Y .- nu.mu0hat) .*
+                  nu.pihat ./ (1 .- nu.pihat) ./ p_treat
+        att_ref = mean((nu.A ./ p_treat) .* (nu.Y .- nu.mu0hat) .- aug_ref)
+        if_ref = (nu.A ./ p_treat) .* (nu.Y .- nu.mu0hat .- att_ref) .- aug_ref
+        se_ref = std(if_ref) / sqrt(length(if_ref))
+
+        @test isapprox(estimate(result), att_ref; rtol = 1e-10)
+        @test isapprox(result.primary.standard_error, se_ref; rtol = 1e-10)
+
+        # And the interval must actually cover the truth of 1.5 here; the
+        # pre-fix SE was inflated by P(A=1)/P(A=0), which hid its own errors
+        # behind an over-wide interval rather than failing loudly.
+        lo, hi = confint(result)
+        @test lo < 1.5 < hi
+        @test (hi - lo) < 1.0
     end
 
     msg = try

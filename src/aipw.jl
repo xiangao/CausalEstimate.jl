@@ -67,19 +67,25 @@ function estimate(psi::ATT, id::Unconfounded, method::AIPW, data::DataFrame; lev
     mu0hat = nuis.mu0hat
 
     mean_a = mean(A)
-    mean_1_a = mean(1 .- A)
+
+    # Both the regression and the augmentation term of the ATT are normalised by
+    # P(A=1), not by P(A=0). The identity behind the augmentation is
+    #     E[(1-A) * pi/(1-pi) * Y] = P(A=1) * E[Y(0) | A=1],
+    # since E[(1-pi) * pi/(1-pi) * mu0] = E[pi * mu0]. Dividing the augmentation
+    # by mean(1 .- A) instead scales that term by P(A=1)/P(A=0), which leaves the
+    # point estimate almost untouched -- the term has mean zero when mu0hat is
+    # consistent -- while inflating the influence-curve variance by the same
+    # factor. That makes it a silent standard-error bug, so keep the two
+    # denominators identical.
+    aug = (1 .- A) .* (Y .- mu0hat) .* pihat ./ (1 .- pihat) ./ mean_a
 
     ey1 = mean(Y[A .== 1.0])
-    ey01hat = mean((A ./ mean_a) .* mu0hat .+
-                   ((1 .- A) ./ mean_1_a) .* (Y .- mu0hat) .* pihat ./ (1 .- pihat))
-    att = mean((A ./ mean_a) .* (Y .- mu0hat) .-
-               ((1 .- A) ./ mean_1_a) .* (Y .- mu0hat) .* pihat ./ (1 .- pihat))
+    ey01hat = mean((A ./ mean_a) .* mu0hat .+ aug)
+    att = mean((A ./ mean_a) .* (Y .- mu0hat) .- aug)
 
     if1 = A .* (Y .- ey1) ./ mean_a
-    if0 = (A ./ mean_a) .* (mu0hat .- ey01hat) .+
-          ((1 .- A) ./ mean_1_a) .* (Y .- mu0hat) .* pihat ./ (1 .- pihat)
-    if_att = (A ./ mean_a) .* (Y .- mu0hat .- att) .-
-             ((1 .- A) ./ mean_1_a) .* (Y .- mu0hat) .* pihat ./ (1 .- pihat)
+    if0 = (A ./ mean_a) .* (mu0hat .- ey01hat) .+ aug
+    if_att = (A ./ mean_a) .* (Y .- mu0hat .- att) .- aug
 
     primary = _effect_estimate(:ATT, att, if_att; level = level)
     components = Dict{Symbol, Any}(
